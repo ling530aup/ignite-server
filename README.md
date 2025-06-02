@@ -1,128 +1,142 @@
-# Ignite Server
+ # Ignite Server
 
-This is a Spring Boot application with Apache Ignite integration, providing REST API endpoints and built-in SQLline support.
+基于 Spring Boot 和 Apache Ignite 的分布式缓存服务器。
 
-## Features
+A distributed caching server based on Spring Boot and Apache Ignite.
 
-- Spring Boot integration
-- Apache Ignite server node
-- REST API endpoints
-- Built-in SQLline support
-- Docker support
-- Jenkins CI/CD pipeline
-- Ignite REST API support
-
-## Prerequisites
+## 技术栈 / Tech Stack
 
 - Java 17
-- Maven 3.6+
-- Docker (optional)
-- Jenkins (optional)
+- Spring Boot 2.7.0
+- Apache Ignite 2.17.0
+- Jetty 9.4.49.v20220914
+- H2 Database 1.4.197
 
-## Building the Application
+## 主要功能 / Main Features
+
+- 分布式缓存 / Distributed Caching
+- SQL 查询支持 / SQL Query Support
+- REST API 接口 / REST API Interface
+- Docker 支持 / Docker Support
+- Jenkins CI/CD 流水线 / Jenkins CI/CD Pipeline
+
+## 快速开始 / Quick Start
+
+### 构建项目 / Build Project
 
 ```bash
 mvn clean install
 ```
 
-## Running the Application
-
-### Using Maven
+### 运行服务 / Run Service
 
 ```bash
 mvn spring-boot:run
 ```
 
-The application will be available at http://localhost:8082
+服务将在 8082 端口启动。
 
-### Using Docker
+The service will start on port 8082.
+
+### 使用 Docker / Using Docker
 
 ```bash
 mvn clean package dockerfile:build
 docker run -p 8082:8082 ignite-server
 ```
 
-## Stopping the Service
+### 停止服务 / Stop Service
 
-### On Linux/MacOS
+#### Linux/MacOS
 
 ```bash
-# Find the process ID
-ps aux | grep ignite-server
+# 查找占用 8082 端口的进程
+lsof -i :8082
 
-# Kill the process
-kill <PID>
-
-# Or use the port number to find and kill the process
-lsof -i :8082 | grep LISTEN
-kill $(lsof -t -i:8082)
+# 终止进程
+kill -9 <PID>
 ```
 
-### On Windows
+#### Windows
 
 ```bash
-# Find the process ID
+# 查找占用 8082 端口的进程
 netstat -ano | findstr :8082
 
-# Kill the process
+# 终止进程
 taskkill /PID <PID> /F
 ```
 
-## REST API Endpoints
+## REST API 接口 / REST API Endpoints
 
 ### Ignite REST API
 
-- `GET /ignite?cmd=version` - Get Ignite version
-- `GET /ignite?cmd=top` - Get topology
-- `GET /ignite?cmd=node` - Get node information
+- `GET /ignite?cmd=version` - 获取 Ignite 版本
+- `GET /ignite?cmd=top` - 获取拓扑信息
+- `GET /ignite?cmd=node` - 获取节点信息
 
-### Custom REST API
+### 自定义 REST API
 
-- `GET /api/hello` - Hello endpoint
-- `GET /api/cache/{cacheName}` - Get cache information
-- `POST /api/cache/{cacheName}` - Create cache
-- `DELETE /api/cache/{cacheName}` - Remove cache
+- `GET /api/hello` - Hello 接口
+- `GET /api/cache/{cacheName}` - 获取缓存信息
+- `POST /api/cache/{cacheName}` - 创建缓存
+- `DELETE /api/cache/{cacheName}` - 删除缓存
 
-## SQL Functionality
+## SQL 功能 / SQL Functionality
+
+应用程序支持通过 Ignite 的 SQL 引擎执行 SQL 查询。您可以使用任何支持 JDBC 的工具连接到数据库。
 
 The application supports SQL queries through Ignite's SQL engine. You can use any JDBC-compliant tool to connect to the database.
 
-## Configuration
+## 配置说明 / Configuration
 
-The application uses the following configuration files:
+主要配置文件：
 
-- `application.properties` - Spring Boot configuration
-- `ignite-config.xml` - Ignite configuration
+Main configuration files:
 
-## License
+- `application.properties` - Spring Boot 配置
+- `ignite-config.xml` - Ignite 配置
 
-This project is licensed under the MIT License.
+## 依赖说明 / Dependencies
 
-### Using Built-in SQLLine
+主要依赖包括：
 
-The application automatically starts SQLLine when running. You can use it to execute SQL commands:
+Main dependencies include:
 
-```sql
--- Create a table
-CREATE TABLE IF NOT EXISTS Person (
-    id INT PRIMARY KEY,
-    name VARCHAR,
-    age INT
-) WITH "template=partitioned,CACHE_NAME=PersonCache";
+- Spring Boot Web
+- Spring Boot Jetty
+- Apache Ignite Core
+- Apache Ignite Spring
+- Apache Ignite Indexing
+- Apache Ignite REST HTTP
+- H2 Database
+- Lombok
 
--- Insert data
-INSERT INTO Person (id, name, age) VALUES (1, 'John', 30);
+## 开发环境 / Development Environment
 
--- Query data
-SELECT * FROM Person;
-```
+- JDK 17
+- Maven 3.6+
+- IDE: IntelliJ IDEA / Eclipse
+- Docker (可选 / optional)
+- Jenkins (可选 / optional)
 
-Default connection details:
-- URL: jdbc:ignite:thin://localhost
-- Username: ignite
-- Password: ignite
+## 注意事项 / Notes
 
-## Jenkins Integration
+1. 确保 8082 端口未被占用
+2. 首次运行时会自动创建 Ignite 工作目录
+3. 使用 Java 17 运行项目
+
+1. Ensure port 8082 is not in use
+2. Ignite work directory will be created automatically on first run
+3. Use Java 17 to run the project
+
+## Jenkins 集成 / Jenkins Integration
+
+项目包含 Jenkinsfile 用于 CI/CD 流水线。流水线包括：
+- 构建
+- 测试
+- 构建 Docker 镜像
+- 推送 Docker 镜像
 
 The project includes a Jenkinsfile for CI/CD pipeline. The pipeline includes:
 - Build
