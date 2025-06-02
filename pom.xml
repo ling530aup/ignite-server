@@ -144,13 +144,6 @@
             <version>${jetty.version}</version>
         </dependency>
 
-        <!-- Apache Ignite SQL -->
-        <dependency>
-            <groupId>sqlline</groupId>
-            <artifactId>sqlline</artifactId>
-            <version>1.12.0</version>
-        </dependency>
-
         <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>

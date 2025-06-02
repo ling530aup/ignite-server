@@ -11,14 +11,13 @@ public class IgniteRestConfig {
     @Bean
     public IgniteConfiguration igniteConfiguration() {
         IgniteConfiguration cfg = new IgniteConfiguration();
-        
+
         // Enable REST API
         ConnectorConfiguration connectorCfg = new ConnectorConfiguration();
-        connectorCfg.setPort(8081); // REST API port
-        
+
         // Enable SQL
         cfg.setConnectorConfiguration(connectorCfg);
-        
+
         return cfg;
     }
-} 
+}
