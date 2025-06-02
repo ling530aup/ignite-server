@@ -1,4 +1,4 @@
- # Ignite Server
+# Ignite Server
 
 基于 Spring Boot 和 Apache Ignite 的分布式缓存服务器。
 
@@ -11,6 +11,7 @@ A distributed caching server based on Spring Boot and Apache Ignite.
 - Apache Ignite 2.17.0
 - Jetty 9.4.49.v20220914
 - H2 Database 1.4.197
+- Lombok
 
 ## 主要功能 / Main Features
 
@@ -19,6 +20,21 @@ A distributed caching server based on Spring Boot and Apache Ignite.
 - REST API 接口 / REST API Interface
 - Docker 支持 / Docker Support
 - Jenkins CI/CD 流水线 / Jenkins CI/CD Pipeline
+
+## 项目结构 / Project Structure
+
+```
+src/main/java/com/example/igniteserver/
+├── config/                 # 配置类
+│   ├── IgniteConfig.java  # Ignite 配置
+│   └── IgniteRestConfig.java  # Ignite REST 配置
+├── controller/            # REST 控制器
+│   ├── IgniteController.java  # Ignite 操作控制器
+│   └── SqlController.java     # SQL 查询控制器
+├── model/                 # 数据模型
+│   └── Person.java       # Person 实体类
+└── IgniteServerApplication.java  # 应用程序入口
+```
 
 ## 快速开始 / Quick Start
 
@@ -88,6 +104,24 @@ taskkill /PID <PID> /F
 
 The application supports SQL queries through Ignite's SQL engine. You can use any JDBC-compliant tool to connect to the database.
 
+### 示例查询 / Example Queries
+
+```sql
+-- 创建表
+CREATE TABLE Person (
+    id BIGINT PRIMARY KEY,
+    name VARCHAR,
+    age INT,
+    salary DOUBLE
+);
+
+-- 插入数据
+INSERT INTO Person (id, name, age, salary) VALUES (1, 'John Doe', 30, 50000.0);
+
+-- 查询数据
+SELECT * FROM Person WHERE age > 25;
+```
+
 ## 配置说明 / Configuration
 
 主要配置文件：
@@ -95,7 +129,10 @@ The application supports SQL queries through Ignite's SQL engine. You can use an
 Main configuration files:
 
 - `application.properties` - Spring Boot 配置
-- `ignite-config.xml` - Ignite 配置
+- `IgniteConfig.java` - Ignite 配置类
+  - 节点发现配置
+  - 缓存配置
+  - 索引配置
 
 ## 依赖说明 / Dependencies
 
@@ -125,10 +162,12 @@ Main dependencies include:
 1. 确保 8082 端口未被占用
 2. 首次运行时会自动创建 Ignite 工作目录
 3. 使用 Java 17 运行项目
+4. 确保 Lombok 插件在 IDE 中正确安装
 
 1. Ensure port 8082 is not in use
 2. Ignite work directory will be created automatically on first run
 3. Use Java 17 to run the project
+4. Make sure Lombok plugin is properly installed in your IDE
 
 ## Jenkins 集成 / Jenkins Integration
 
